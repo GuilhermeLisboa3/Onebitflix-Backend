@@ -6,7 +6,8 @@ import { episodesController } from "./controllers/episodesController";
 const router = express.Router();
 
 //rotas para o user
-router.post('/auth/register',authController.resgiter)
+router.post("/auth/register", authController.resgiter);
+router.post("/auth/login", authController.login);
 
 //rotas de categorias
 router.get("/categories", categoriesController.index);
@@ -18,8 +19,7 @@ router.get("/courses/newest", coursesController.newest);
 router.get("/courses/search", coursesController.search);
 router.get("/courses/:id", coursesController.show);
 
-
 //rotas do episodeios
-router.get('/episodes/stream', episodesController.stream)
+router.get("/episodes/stream", episodesController.stream);
 
 export { router };

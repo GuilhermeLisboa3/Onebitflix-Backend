@@ -3,10 +3,13 @@ import { categoriesController } from "./controllers/categoriesController";
 import { coursesController } from "./controllers/coursesController";
 const router = express.Router();
 
+//rotas de categorias
 router.get("/categories", categoriesController.index);
 router.get("/categories/:id", categoriesController.show);
 
+//rotas dos cursos
 router.get("/courses/featured", coursesController.featured);
+router.get("/courses/newest", coursesController.newest);
 router.get("/courses/:id", coursesController.show);
 
 export { router };

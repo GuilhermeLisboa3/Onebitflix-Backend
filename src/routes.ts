@@ -3,6 +3,7 @@ import { authController } from "./controllers/authController";
 import { categoriesController } from "./controllers/categoriesController";
 import { coursesController } from "./controllers/coursesController";
 import { episodesController } from "./controllers/episodesController";
+import { ensureAuth } from "./middlewares/auth";
 const router = express.Router();
 
 //rotas para o user
@@ -10,16 +11,16 @@ router.post("/auth/register", authController.resgiter);
 router.post("/auth/login", authController.login);
 
 //rotas de categorias
-router.get("/categories", categoriesController.index);
-router.get("/categories/:id", categoriesController.show);
+router.get("/categories",ensureAuth, categoriesController.index);
+router.get("/categories/:id",ensureAuth, categoriesController.show);
 
 //rotas dos cursos
-router.get("/courses/featured", coursesController.featured);
+router.get("/courses/featured",ensureAuth, coursesController.featured);
 router.get("/courses/newest", coursesController.newest);
-router.get("/courses/search", coursesController.search);
-router.get("/courses/:id", coursesController.show);
+router.get("/courses/search",ensureAuth, coursesController.search);
+router.get("/courses/:id",ensureAuth, coursesController.show);
 
 //rotas do episodeios
-router.get("/episodes/stream", episodesController.stream);
+router.get("/episodes/stream",ensureAuth, episodesController.stream);
 
 export { router };

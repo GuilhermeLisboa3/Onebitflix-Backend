@@ -1,6 +1,15 @@
 import { Favorite } from "../models";
 
 export const favoriteService = {
+  delete: async (userId: number, courseId: number) => {
+    await Favorite.destroy({
+      where: {
+        userId,
+        courseId,
+      },
+    });
+  },
+
   findByUserId: async (userId: number) => {
     const favorites = await Favorite.findAll({
       attributes: [["user_id", "userId"]],

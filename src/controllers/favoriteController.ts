@@ -3,6 +3,22 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import { favoriteService } from "../services/favoriteService";
 
 export const favoriteController = {
+  //delete
+  delete: async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user!.id;
+    const courseId  = req.params.id;
+    try {
+      const deleteFavorite = await favoriteService.delete(
+        userId,
+        Number(courseId)
+      );
+      return res.status(204).send();
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
+      }
+    }
+  },
   //get
   index: async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user!.id;

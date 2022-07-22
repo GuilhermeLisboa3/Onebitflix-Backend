@@ -27,7 +27,7 @@ export interface UserInstance
 }
 
 export const User = sequelize.define<UserInstance, UserAttributes>(
-  "users",
+  "Users",
   {
     id: {
       allowNull: false,

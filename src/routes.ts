@@ -26,5 +26,6 @@ router.get("/episodes/stream",ensureAuthViaQuery, episodesController.stream);
 
 //rotas de favorito
 router.post('/favorites', ensureAuth ,favoriteController.save)
+router.get('/favorites', ensureAuth ,favoriteController.index)
 
 export { router };

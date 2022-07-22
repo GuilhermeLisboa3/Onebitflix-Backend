@@ -1,3 +1,4 @@
+import { favoriteController } from './controllers/favoriteController';
 import express from "express";
 import { authController } from "./controllers/authController";
 import { categoriesController } from "./controllers/categoriesController";
@@ -22,5 +23,8 @@ router.get("/courses/:id",ensureAuth, coursesController.show);
 
 //rotas do episodeios
 router.get("/episodes/stream",ensureAuthViaQuery, episodesController.stream);
+
+//rotas de favorito
+router.post('/favorites', ensureAuth ,favoriteController.save)
 
 export { router };

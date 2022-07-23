@@ -25,6 +25,8 @@ router.get("/courses/:id", ensureAuth, coursesController.show);
 
 //rotas do episodeios
 router.get("/episodes/stream", ensureAuthViaQuery, episodesController.stream);
+router.get('/episodes/:id/watchTime',ensureAuth,episodesController.getWatchTime)
+router.post('/episodes/:id/watchTime',ensureAuth,episodesController.setWatchTime)
 
 //rotas de favorito
 router.post("/favorites", ensureAuth, favoriteController.save);

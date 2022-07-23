@@ -6,6 +6,7 @@ import { categoriesController } from "./controllers/categoriesController";
 import { coursesController } from "./controllers/coursesController";
 import { episodesController } from "./controllers/episodesController";
 import { ensureAuth, ensureAuthViaQuery } from "./middlewares/auth";
+import { usersController } from "./controllers/usersController";
 const router = express.Router();
 
 //rotas para o user
@@ -36,5 +37,8 @@ router.delete("/favorites/:id", ensureAuth, favoriteController.delete);
 //rota do like
 router.post("/likes", ensureAuth, likeController.create);
 router.delete("/likes/:id", ensureAuth, likeController.delete);
+
+//rota user
+router.get('/users/current/watching', ensureAuth, usersController.watching)
 
 export { router };

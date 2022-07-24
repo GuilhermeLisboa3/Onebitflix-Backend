@@ -1,4 +1,4 @@
-import { WatchTime } from './../models/WatchTime';
+import { WatchTime } from "./../models/WatchTime";
 import { User } from "../models";
 import { EpisodeInstance } from "../models/Episodes";
 import { UserCreationAttributes } from "../models/User";
@@ -19,17 +19,38 @@ function filterLastEpisodesByCourse(episodes: EpisodeInstance[]) {
 
     if (episodesFromSameCourse!.order > episode.order) return currentList;
 
-    const listWithoutEpisodeFromSameCourse = currentList.filter(ep=> ep.courseId !== episode.courseId);
-    listWithoutEpisodeFromSameCourse.push(episode)
-    
-    return listWithoutEpisodeFromSameCourse
+    const listWithoutEpisodeFromSameCourse = currentList.filter(
+      (ep) => ep.courseId !== episode.courseId
+    );
+    listWithoutEpisodeFromSameCourse.push(episode);
 
+    return listWithoutEpisodeFromSameCourse;
   }, [] as EpisodeInstance[]);
 
-  return lastEpisodes
+  return lastEpisodes;
 }
 
 export const userService = {
+  update: async (
+    id: number,
+    attributes: {
+      firstName: string;
+      lastName: string;
+      phone: string;
+      birth: Date;
+      email: string;
+    }
+  ) => {
+    const [affectedRow,updatedUsers] = await User.update(attributes,{
+      where:{
+        id
+      },
+      returning:true
+    })
+
+    return updatedUsers[0]
+  },
+
   findByEmail: async (email: string) => {
     const user = await User.findOne({
       where: {
@@ -48,33 +69,30 @@ export const userService = {
     const userWitchimgEpisodes = await User.findByPk(id, {
       include: {
         association: "Episodes",
-        attributes:[
-          'id',
-          'name',
-          'synopsis',
-          'order',
-          ['video_url','videoUrl'],
-          ['seconds_long', 'secondsLong'],
-          ['course_id', 'courseId'],
+        attributes: [
+          "id",
+          "name",
+          "synopsis",
+          "order",
+          ["video_url", "videoUrl"],
+          ["seconds_long", "secondsLong"],
+          ["course_id", "courseId"],
         ],
         include: [
           {
             association: "Course",
-            attributes:[
-              'id',
-              'name',
-              'synopsis',
-              ['thumbnail_url', 'thumbnailUrl']
+            attributes: [
+              "id",
+              "name",
+              "synopsis",
+              ["thumbnail_url", "thumbnailUrl"],
             ],
-            as: 'course'
+            as: "course",
           },
         ],
         through: {
           as: "watchTime",
-          attributes:[
-            'seconds',
-            ['updated_at', 'updatedAt']
-          ]
+          attributes: ["seconds", ["updated_at", "updatedAt"]],
         },
       },
     });
@@ -83,11 +101,14 @@ export const userService = {
       throw new Error("Usuário não encontrado");
     }
 
-    const keepWatchingList = filterLastEpisodesByCourse(userWitchimgEpisodes.Episodes!)
+    const keepWatchingList = filterLastEpisodesByCourse(
+      userWitchimgEpisodes.Episodes!
+    );
 
-    // @ts-ignore
-    keepWatchingList.sort((a,b)=> a.WatchTime?.updatedAt < b.WatchTime?.updatedAt ? 1 : -1)
+    //@ts-ignore
+    keepWatchingList.sort((a, b) => a.WatchTime?.updatedAt < b.WatchTime?.updatedAt ? 1 : -1
+    );
 
-    return keepWatchingList
+    return keepWatchingList;
   },
 };

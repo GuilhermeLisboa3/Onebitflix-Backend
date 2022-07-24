@@ -3,11 +3,32 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import { userService } from "../services/userService";
 
 export const usersController = {
-  show: async (req: AuthenticatedRequest, res: Response) => {
-    const current = req.user!
+  update: async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.user!;
+    const { firstName, lastName, phone, birth, email } = req.body;
 
     try {
-      return res.json(current)
+      const updateUser = await userService.update(id, {
+        firstName,
+        lastName,
+        phone,
+        birth,
+        email,
+      });
+
+      return res.json(updateUser)
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
+      }
+    }
+  },
+
+  show: async (req: AuthenticatedRequest, res: Response) => {
+    const current = req.user!;
+
+    try {
+      return res.json(current);
     } catch (err) {
       if (err instanceof Error) {
         return res.status(400).json({ message: err.message });
@@ -20,7 +41,7 @@ export const usersController = {
 
     try {
       const watching = await userService.getKeepWatchingList(id);
-      return res.json(watching)
+      return res.json(watching);
     } catch (err) {
       if (err instanceof Error) {
         return res.status(400).json({ message: err.message });

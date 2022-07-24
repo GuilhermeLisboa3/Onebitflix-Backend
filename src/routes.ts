@@ -40,6 +40,7 @@ router.delete("/likes/:id", ensureAuth, likeController.delete);
 
 //rota user
 router.get('/users/current/watching', ensureAuth, usersController.watching)
+router.put('/users/current', ensureAuth, usersController.update)
 router.get('/users/current', ensureAuth, usersController.show)
 
 export { router };

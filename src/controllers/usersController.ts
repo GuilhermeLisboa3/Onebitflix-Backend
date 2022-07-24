@@ -3,6 +3,18 @@ import { AuthenticatedRequest } from "../middlewares/auth";
 import { userService } from "../services/userService";
 
 export const usersController = {
+  show: async (req: AuthenticatedRequest, res: Response) => {
+    const current = req.user!
+
+    try {
+      return res.json(current)
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(400).json({ message: err.message });
+      }
+    }
+  },
+
   watching: async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.user!;
 

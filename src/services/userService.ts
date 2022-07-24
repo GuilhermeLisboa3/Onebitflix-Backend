@@ -31,6 +31,20 @@ function filterLastEpisodesByCourse(episodes: EpisodeInstance[]) {
 }
 
 export const userService = {
+  updatePassword: async (id: string | number, password: string) => {
+    const [affectedRows, updatedUsers] = await User.update(
+      {
+        password,
+      },
+      {
+        where: { id },
+        individualHooks: true,
+        returning: true,
+      }
+    );
+
+    return updatedUsers[0];
+  },
   update: async (
     id: number,
     attributes: {
@@ -41,14 +55,14 @@ export const userService = {
       email: string;
     }
   ) => {
-    const [affectedRow,updatedUsers] = await User.update(attributes,{
-      where:{
-        id
+    const [affectedRow, updatedUsers] = await User.update(attributes, {
+      where: {
+        id,
       },
-      returning:true
-    })
+      returning: true,
+    });
 
-    return updatedUsers[0]
+    return updatedUsers[0];
   },
 
   findByEmail: async (email: string) => {
@@ -105,8 +119,9 @@ export const userService = {
       userWitchimgEpisodes.Episodes!
     );
 
-    //@ts-ignore
-    keepWatchingList.sort((a, b) => a.WatchTime?.updatedAt < b.WatchTime?.updatedAt ? 1 : -1
+    keepWatchingList.sort((a, b) =>
+      //@ts-ignore
+      a.WatchTime?.updatedAt < b.WatchTime?.updatedAt ? 1 : -1
     );
 
     return keepWatchingList;
